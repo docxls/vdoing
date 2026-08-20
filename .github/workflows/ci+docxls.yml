@@ -1,8 +1,16 @@
+# ci+docxls.yml
+# github.com/shenjuexiao
+# 20260820
+
+# github.com/xugaoyi/vuepress-theme-vdoing
+# github.com/xugaoyi/vuepress-theme-vdoing/blob/master/.github/workflows/ci.yml
+
+# .github/workflows/ci+docxls.yml
 name: CI
 
 #on: [push]
 
-# 在master分支发生push事件时触发。
+# 在 master 分支发生 push 事件时触发
 on:
   push:
     branches:
@@ -11,25 +19,43 @@ on:
       - main
   workflow_dispatch:
 
-env: # 设置环境变量
-  TZ: Asia/Shanghai # 时区（设置时区可使页面中的`最近更新时间`使用该时区时间）
+# 设置环境变量
+env: 
+  # 时区（设置时区可使页面中的`最近更新时间`使用该时区时间）
+  TZ: Asia/Shanghai
 
 jobs:
-  build: # 自定义名称
-    runs-on: ubuntu-latest # 运行在虚拟机环境ubuntu-latest
+  # 自定义名称
+  build: 
+    # 运行在虚拟机环境ubuntu-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x]
-
+        # 20260820
+        # node-version: [18.x]
+        node-version: [20.x]
+        
     steps:
-      - name: Checkout # 步骤1
-        uses: actions/checkout@v1 # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
-      - name: Use Node.js ${{ matrix.node-version }} # 步骤2
-        uses: actions/setup-node@v3 # 作用：安装nodejs
+      # 步骤 1
+      - name: Checkout 
+        # 使用的动作，格式：userName/repoName
+        # 作用：检出仓库，获取源码
+        # 官方 actions 库：github.com/actions
+        # 20260820
+        # uses: actions/checkout@v1
+        uses: actions/checkout@v4
+      # 步骤 2
+      - name: Use Node.js ${{ matrix.node-version }}
+        # 作用：安装 nodejs
+        # 20260820
+        # uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }} # 版本
-      - name: Build-and-deploy # 步骤3
+          # 版本
+          node-version: ${{ matrix.node-version }}
+      # 步骤 3
+      - name: Build-and-deploy
         run: |
           remote_addr=`git remote get-url --push origin`
           commit_info=`git describe --all --always --long`
@@ -48,4 +74,6 @@ jobs:
           remote_addr=`echo $remote_addr | awk -F'://' '{print $2}'`
           remote_addr=https://${user_name}:${{secrets.GITHUB_TOKEN}}@${remote_addr}
           git remote add origin ${remote_addr}
-          git push origin HEAD:$deploy_branch --force # 推送到github $deploy_branch分支
+          # 推送到github $deploy_branch分支
+          git push origin HEAD:$deploy_branch --force
+          
