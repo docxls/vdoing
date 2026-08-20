@@ -19,6 +19,11 @@ on:
       - main
   workflow_dispatch:
 
+# 20260820
+# 赋予写入仓库内容的权限
+permissions:
+  contents: write   
+
 # 设置环境变量
 env: 
   # 时区（设置时区可使页面中的`最近更新时间`使用该时区时间）
